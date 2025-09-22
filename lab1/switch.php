@@ -48,7 +48,6 @@ $day = 3;
 		default => 'Неизвестный день'
 	};
 	
-	// Сохраняем результат в файл match.php
 	$matchContent = '<?php
 $day = ' . $day . ';
 $result = match(true) {
