@@ -6,6 +6,10 @@
 */
 $name = 'Иван';
 $age = 20;
+
+
+$nameType = gettype($name);
+$ageType = gettype($age);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -17,23 +21,15 @@ $age = 20;
 </head>
 <body>
 	<h1>Переменные и вывод</h1>
-	<?php
-	/*
-	ЗАДАНИЕ 2
-	- Выведите с помощью echo фразу "Меня зовут: $name", например: 'Меня зовут: Иван'.
-	- Выведите фразу "Мне $age лет", например: 'Мне 20 лет'.
-	- Выведите информацию о типе переменных $name и $age.
-	- Удалите переменные $name и $age.
-	- Измените код так, чтобы каждая фраза начиналась с новой строки.
-	- Изолируйте код PHP от HTML-разметки.
-	*/
-	echo "Меня зовут: $name<br>";
-	echo "Мне $age лет<br>";
-	echo "Тип переменной \$name: " . gettype($name) . "<br>";
-	echo "Тип переменной \$age: " . gettype($age) . "<br>";
 	
+	<p>Меня зовут: <?php echo $name; ?></p>
+	<p>Мне <?php echo $age; ?> лет</p>
+	<p>Тип переменной $name: <?php echo $nameType; ?></p>
+	<p>Тип переменной $age: <?php echo $ageType; ?></p>
+	
+	<?php
 	// Удаляем переменные
 	unset($name, $age);
-	?> 
+	?>
 </body>
 </html>
