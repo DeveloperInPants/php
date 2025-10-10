@@ -4,7 +4,7 @@ declare(strict_types=1);
 function printStringVertical(string $str): void
 {
     $index = 0;
-    $length = strlen($str);
+    $length = mb_strlen($str);
     while ($index < $length) {
         echo $str[$index] . "<br>";
         $index++;
