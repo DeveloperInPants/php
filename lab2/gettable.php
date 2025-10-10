@@ -7,7 +7,7 @@ function getTable(int $cols = 5, int $rows = 5, string $color = 'yellow'): int
     $count++;
 
     echo "<table>";
-    echo "<tr><th></th>";
+    echo "<tr><th style='background-color: $color;'></th>";
     for ($col = 1; $col <= $cols; $col++) {
         echo "<th style='background-color: $color;'>" . $col . "</th>";
     }
