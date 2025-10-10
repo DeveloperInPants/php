@@ -11,7 +11,7 @@ function printStringVertical(string $str): void
     }
 }
 
-$var = "Привет";
+$var = "Hello";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
