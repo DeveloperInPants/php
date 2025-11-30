@@ -1,108 +1,103 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
 declare(strict_types=1);
 
-/**
- * Task 1: Cookie Tracking
- * This script tracks user visits using cookies.
- * On the first visit, it displays "Welcome!"
- * On subsequent visits, it shows the number of visits and the last visit time.
+/*
+ * Скрипт управления cookie
+ * 
+ * Этот скрипт отслеживает посещения пользователя с помощью cookie и отображает:
+ * - Приветственное сообщение для первых посетителей
+ * - Количество посещений и дату последнего визита для возвращающихся пользователей
  */
 
-// Define cookie parameters
-$cookieName = 'visit_tracker';
-$cookieLifetime = 2592000; // 30 days in seconds
+/*
+ЗАДАНИЕ 1
+- Инициализируйте переменную для подсчета количества посещений
+- Если соответствующие данные передавались через куки
+  сохраняйте их в эту переменную 
+- Нарастите счетчик посещений
+- Инициализируйте переменную для хранения значения последнего посещения страницы
+- Если соответствующие данные передавались из куки, отфильтруйте их и сохраните в эту переменную.
+  Для фильтрации используйте функции trim(), htmlspecialchars()
+- С помощью функции setcookie() установите соответствующие куки.  Задайте время хранения куки 1 сутки. 
+  Для задания времени последнего посещения страницы используйте функцию date()
+*/
+
+// Инициализация переменной для подсчета посещений
+$visitCount = 0;
 
 /**
- * Initialize and manage visit tracking cookie
- * 
- * This function initializes the visit tracker cookie if it doesn't exist,
- * or increments the visit count if it does. It also updates the timestamp
- * of the last visit.
- * 
- * @return array An associative array containing visit count and last visit time
+ * Получает количество посещений из cookie
+ * @return int Количество посещений
  */
-function initializeVisitTracker(): array {
-    global $cookieName, $cookieLifetime;
-    
-    $currentTime = time();
-    
-    // Check if cookie exists
-    if (!isset($_COOKIE[$cookieName])) {
-        // First visit - initialize cookie
-        $visitData = [
-            'count' => 1,
-            'lastVisit' => $currentTime
-        ];
-        $cookieValue = serialize($visitData);
-        setcookie($cookieName, $cookieValue, $currentTime + $cookieLifetime, '/');
-        return $visitData;
-    } else {
-        // Subsequent visit - update cookie
-        $visitData = unserialize($_COOKIE[$cookieName]);
-        $visitData['count']++;
-        $visitData['lastVisit'] = $currentTime;
-        $cookieValue = serialize($visitData);
-        setcookie($cookieName, $cookieValue, $currentTime + $cookieLifetime, '/');
-        return $visitData;
+function getVisitCountFromCookie(): int {
+    if (isset($_COOKIE['visit_count'])) {
+        return (int)trim(htmlspecialchars($_COOKIE['visit_count']));
     }
+    return 0;
 }
 
-// Initialize the visit tracker
-$visitData = initializeVisitTracker();
+/**
+ * Получает дату последнего посещения из cookie
+ * @return string Дата последнего посещения
+ */
+function getLastVisitFromCookie(): string {
+    if (isset($_COOKIE['last_visit'])) {
+        return trim(htmlspecialchars($_COOKIE['last_visit']));
+    }
+    return '';
+}
 
+// Получаем данные из cookie
+$visitCount = getVisitCountFromCookie();
+$lastVisit = getLastVisitFromCookie();
+
+// Увеличиваем счетчик посещений
+$visitCount++;
+
+// Устанавливаем текущее время для последнего посещения
+$currentDateTime = date('d-m-Y H:i:s');
+
+// Устанавливаем cookie на 1 сутки (86400 секунд)
+setcookie('visit_count', (string)$visitCount, time() + 86400);
+setcookie('last_visit', $currentDateTime, time() + 86400);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Tracking</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-        .message {
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .welcome {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .revisit {
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Последний визит</title>
 </head>
 <body>
-    <h1>Cookie Tracking Demo</h1>
-    
-    <?php if ($visitData['count'] == 1): ?>
-        <div class="message welcome">
-            <h2>Welcome!</h2>
-            <p>This is your first visit to this page.</p>
-        </div>
-    <?php else: ?>
-        <div class="message revisit">
-            <h2>Welcome Back!</h2>
-            <p>You have visited this page <strong><?php echo htmlspecialchars($visitData['count']); ?></strong> times.</p>
-            <p>Your last visit was on <strong><?php echo htmlspecialchars(date('d-m-Y H:i:s', $visitData['lastVisit'])); ?></strong></p>
-        </div>
-    <?php endif; ?>
-    
-    <p>
-        <a href="javascript:location.reload()">Refresh Page</a> | 
-        <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">Visit Again</a>
-    </p>
+
+<h1>Последний визит</h1>
+
+<?php
+/*
+ЗАДАНИЕ 2
+- Выводите информацию о количестве посещений и дате последнего посещения
+*/
+
+/**
+ * Выводит информацию о посещениях
+ * @param int $visitCount Количество посещений
+ * @param string $lastVisit Дата последнего посещения
+ */
+function displayVisitInfo(int $visitCount, string $lastVisit): void {
+    if ($visitCount === 1) {
+        echo "<p>Добро пожаловать!</p>";
+    } else {
+        echo "<p>Вы зашли на страницу {$visitCount} раз</p>";
+        if (!empty($lastVisit)) {
+            echo "<p>Последнее посещение: {$lastVisit}</p>";
+        }
+    }
+}
+
+// Выводим информацию о посещениях
+displayVisitInfo($visitCount, $lastVisit);
+?>
+
 </body>
 </html>
