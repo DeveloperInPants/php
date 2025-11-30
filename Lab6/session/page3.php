@@ -1,30 +1,31 @@
 <?php
 declare(strict_types=1);
 
-require_once 'savepage.inc.php';
-require_once 'visited.inc.php';
+ini_set("session.use_only_cookies", "0");
+ini_set("session.use_trans_sid", "1");
+// Открываем сессию
+session_start();
 
-// Save current page
-saveCurrentPage('Страница 3');
+// Подключаем код для сохранения информации о странице в сессии
+include('savepage.inc.php');
 ?>
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Page 3</title>
-    <style>
-        body { font-family: Arial; margin: 20px; }
-        a { margin-right: 20px; }
-    </style>
+	<meta charset="utf-8">
+	<title>Страница 3</title>
 </head>
 <body>
-    <h1>Страница 3</h1>
-    <h2>Меню</h2>
-    <ul>
-        <li><a href="page1.php">Страница 1</a></li>
-        <li><a href="page2.php">Страница 2</a></li>
-        <li><a href="page3.php">Страница 3</a></li>
-    </ul>
-    <?php displayVisitedPages(); ?>
+
+<h1>Страница 3</h1>
+
+<?php
+// Подключаем меню
+include('menu.inc.php');
+
+// Подключаем код для вывода информации обо всех посещенных страницах
+include('visited.inc.php');
+?>
+
 </body>
 </html>
