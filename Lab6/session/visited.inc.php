@@ -1,34 +1,37 @@
 <?php
 declare(strict_types=1);
 
-/**
- * Task 2: Display visited pages list
- * This file displays the list of visited pages from the session.
- */
+// Код для всех страниц - вывод информации о посещенных страницах
+
+/*
+ЗАДАНИЕ 2
+- В случае сохранения данных 
+	- в массив, проверьте, существует ли он в сессии
+	- в строку, преобразуйте её в массив
+- Выводите в цикле список всех посещённых пользователем страниц
+*/
 
 /**
- * Get all visited pages from the session
- * 
- * @return array Array of visited page paths/identifiers
- */
-function getVisitedPages(): array {
-    if (isset($_SESSION['visited_pages'])) {
-        return $_SESSION['visited_pages'];
-    }
-    return [];
-}
-
-/**
- * Display the visited pages list as HTML
- * 
- * @return void
+ * Выводит список всех посещенных страниц
  */
 function displayVisitedPages(): void {
-    $visitedPages = getVisitedPages();
-    echo '<h3>Список посещённых страниц</h3>';
-    echo '<ol>';
-    foreach ($visitedPages as $index => $page) {
-        echo '<li>' . htmlspecialchars((string)$page) . '</li>';
+    // Проверяем, существует ли массив посещенных страниц в сессии
+    if (isset($_SESSION['visited_pages']) && !empty($_SESSION['visited_pages'])) {
+        echo "<h3>Список посещённых страниц:</h3>";
+        echo "<ul>";
+        
+        // Выводим все посещенные страницы в цикле
+        foreach ($_SESSION['visited_pages'] as $index => $page) {
+            $pageName = basename($page); // Получаем только имя файла
+            echo "<li>" . ($index + 1) . ". $pageName</li>";
+        }
+        
+        echo "</ul>";
+    } else {
+        echo "<p>Вы еще не посещали другие страницы.</p>";
     }
-    echo '</ol>';
 }
+
+// Выводим список посещенных страниц
+displayVisitedPages();
+?>
