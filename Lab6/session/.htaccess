@@ -1,3 +1,0 @@
-# Настройки PHP
-php_flag session.use_only_cookies 0
-php_flag session.use_trans_sid 1
