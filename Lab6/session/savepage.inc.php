@@ -1,33 +1,29 @@
 <?php
 declare(strict_types=1);
 
-/**
- * Task 1: Save page tracking
- * This file handles session initialization and page tracking.
- * It saves the current page in the session visited pages list.
- */
+// Код для всех страниц - сохранение информации о посещенных страницах
 
-// Start session
-session_start();
+/*
+ЗАДАНИЕ 1
+- Создайте в сессии либо 
+	- массив для хранения всех посещенных страниц и сохраните в качестве его очередного элемента путь к текущей странице. 
+	- строку с уникальным разделителем и последовательно её дополняйте
+*/
 
 /**
- * Initialize the visited pages array in session if it doesn't exist.
- * 
- * @return void
+ * Сохраняет информацию о посещенной странице в сессии
+ * @param string $pagePath Путь к текущей странице
  */
-function initializeVisitedPages(): void {
+function saveVisitedPage(string $pagePath): void {
+    // Инициализируем массив посещенных страниц, если его нет
     if (!isset($_SESSION['visited_pages'])) {
         $_SESSION['visited_pages'] = [];
     }
-}
-
-/**
- * Add the current page to the visited pages list in the session.
- * 
- * @param string $pagePath The path or identifier of the current page
- * @return void
- */
-function saveCurrentPage(string $pagePath): void {
-    initializeVisitedPages();
+    
     $_SESSION['visited_pages'][] = $pagePath;
 }
+
+// Получаем текущий путь страницы
+$currentPage = $_SERVER['PHP_SELF'];
+saveVisitedPage($currentPage);
+?>
