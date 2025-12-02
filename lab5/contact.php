@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @return bool
  */
 function sendEmail(string $subject, string $body): bool {
-    $to = 'nikikitazaharov597@gmail.com';
+    $to = 'nikitazaharov597@gmail.com';
     $headers = "From: admin@center.ogu\r\n";
     
     return mail($to, $subject, $body, $headers);
